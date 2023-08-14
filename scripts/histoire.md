@@ -38,6 +38,19 @@ npm i -D histoire @histoire/plugin-vue @histoire/plugin-nuxt
 ```
 
 ```js
+/**
+ * Jqコマンドを使ってJSONファイルに値を追加する
+ * @param {string} path ファイルパス
+ * @param {string} key 追加するJsonのキー
+ * @param {unknown} value 追加するJsonの値
+ * @returns {Promise<void>}
+ */
+const insertJson = (path, key, value) => {
+  $`mv ${path} _${path} \
+  && cat _${path} | jq '${key} |= . + ${value}' > ${path} \
+  && rm -f _${path}`;
+};
+
 // setup histoire config for Nuxt
 const promise1 = $`cat <<EOF > histoire.config.ts
 import { HstNuxt } from "@histoire/plugin-nuxt";

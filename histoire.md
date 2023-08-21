@@ -7,7 +7,7 @@
 - [google/zx](https://github.com/google/zx)
 - [jq](https://github.com/jqlang/jq)
 
-```sh
+```
 # zxが存在しない場合はインストール、存在する場合はバージョンを表示する
 if [ -z `which zx` ]; then
   echo 'zx is not installed'
@@ -36,6 +36,8 @@ Show [Getting started with Histoire#Installation](https://histoire.dev/guide/vue
 ```sh
 npm i -D histoire @histoire/plugin-vue @histoire/plugin-nuxt
 ```
+
+## Setup
 
 ```js
 // setup histoire config for Nuxt
@@ -68,4 +70,23 @@ const promise4 = $`mv ${PACKAGE} _${PACKAGE} \
 && rm -f _${PACKAGE}`;
 
 await Promise.all([promise1, promise2, promise3, promise4]);
+```
+
+### Setup histoire.setup.ts for Pinia
+
+```js
+const isCreate = await question(
+  "Create histoire.setup.ts for 'Pinia'? (y/n) > ",
+);
+if (isCreate === "y") {
+  await $`cat <<EOF > histoire.setup.ts
+import { defineSetupVue3 } from "@histoire/plugin-vue";
+import { createPinia } from "pinia";
+
+export const setupVue3 = defineSetupVue3(({ app }) => {
+  const pinia = createPinia();
+  app.use(pinia);
+});
+EOF`;
+}
 ```
